@@ -1,0 +1,2 @@
+class WeaponWrapper:
+    pass

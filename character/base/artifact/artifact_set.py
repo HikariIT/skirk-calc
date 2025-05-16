@@ -1,0 +1,2 @@
+class ArtifactSetWrapper:
+    pass
