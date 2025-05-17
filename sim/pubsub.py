@@ -3,7 +3,6 @@ from common.logger.logger import Logger
 from typing import Callable
 
 
-
 class PubSub:
 
     def __init__(self):
@@ -24,5 +23,5 @@ class PubSub:
         if event in self.subscriber_list:
             for key, callback in self.subscriber_list[event].items():
                 callback(*args, **kwargs)
-                self.logger.info(f"Callback {key} executed for event {event.name} with args: {args} and kwargs: {kwargs}")
+                self.logger.info(f"Callback -> {{key: {key.ljust(30)}event: {event.name.ljust(20)}args: {args}, kwargs: {kwargs} }}")
 

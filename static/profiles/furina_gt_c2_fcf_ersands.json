@@ -1,0 +1,35 @@
+{
+  "base": {
+    "name": "Furina",
+    "rarity": 5,
+    "element": 2,
+    "level": 90,
+    "max_level": 90,
+    "ascension": 6,
+    "constellation": 2
+  },
+  "weapon": {
+    "name": "Fleuve Cendre Ferryman",
+    "weapon_type": 1,
+    "refinement": 5,
+    "level": 90,
+    "max_level": 90
+  },
+  "talents": {
+    "attack": 9,
+    "skill": 9,
+    "burst": 9
+  },
+  "stats": {
+    "CRIT_RATE": 0.192
+  },
+  "sets": {
+    "GOLDEN_TROUPE": 4
+  },
+  "main_stats": {
+    "rarity": 5,
+    "sands": 8,
+    "goblet": 13,
+    "circlet": 9
+  }
+}

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
 from character.base.artifact.artifact_set import ArtifactSetWrapper
+from character.base.weapon.weapon import WeaponWrapper
 from common.enum.artifact_set import ArtifactSet
 from common.enum.element import Element
-from common.enum.weapon import WeaponType
-from character.base.weapon.weapon import WeaponWrapper
+from profiles.character import CharacterProfile
 
 @dataclass
 class CharacterBaseAttributes:
@@ -16,14 +16,17 @@ class CharacterBaseAttributes:
     ascension: int
     constellation: int
 
-@dataclass
-class CharacterWeaponAttributes:
-    name: str
-    weapon: WeaponType
-    refinement: int
-    level: int
-    max_level: int
-    params: dict[str, float]
+    @staticmethod
+    def from_profile(profile: CharacterProfile) -> 'CharacterBaseAttributes':
+        return CharacterBaseAttributes(
+            profile.base.name,
+            profile.base.rarity,
+            profile.base.element,
+            profile.base.level,
+            profile.base.max_level,
+            profile.base.ascension,
+            profile.base.constellation
+        )
 
 @dataclass
 class CharacterTalentAttributes:
@@ -40,7 +43,7 @@ class CharacterSkillConstellationUpgradeAttributes:
 @dataclass
 class CharacterEquipmentAttributes:
     weapon: WeaponWrapper
-    sets: dict[ArtifactSet, ArtifactSetWrapper]
+    sets: dict[ArtifactSet, int]
 
 @dataclass
 class CharacterEnergyAttributes:

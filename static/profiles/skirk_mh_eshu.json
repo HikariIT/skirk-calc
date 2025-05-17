@@ -1,0 +1,35 @@
+{
+  "base": {
+    "name": "Skirk",
+    "rarity": 5,
+    "element": 7,
+    "level": 90,
+    "max_level": 90,
+    "ascension": 6,
+    "constellation": 0
+  },
+  "weapon": {
+    "name": "Calamity of Eshu",
+    "weapon_type": 1,
+    "refinement": 5,
+    "level": 90,
+    "max_level": 90
+  },
+  "talents": {
+    "attack": 9,
+    "skill": 9,
+    "burst": 9
+  },
+  "stats": {
+    "CRIT_DMG": 0.384
+  },
+  "sets": {
+    "MARECHAUSSE_HUNTER": 4
+  },
+  "main_stats": {
+    "rarity": 5,
+    "sands": 4,
+    "goblet": 4,
+    "circlet": 10
+  }
+}
