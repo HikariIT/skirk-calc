@@ -64,3 +64,21 @@ class Event(Enum):
     ON_ENEMY_ADDED = 60
     ON_TICK = 61
     ON_SIM_ENDED_SUCCESSFULLY = 62
+
+class LogEventType(Enum):
+    CHARACTER = 0
+    WEAPON = 1
+    ARTIFACT = 7
+
+    DAMAGE = 2
+    HEAL = 10
+
+    ACTION = 4
+    CALCULATION = 3
+    MODIFIER = 8
+    HITLAG = 5
+    AURA = 6
+    ICD = 9
+    TASK = 11
+    EVENT = 12
+    SNAPSHOT = 13

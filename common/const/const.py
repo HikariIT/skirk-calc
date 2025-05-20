@@ -1,0 +1,1 @@
+HEAL_ALL_TARGETS = -1

@@ -1,10 +1,10 @@
 from common.enum.char_stats import CharStats
-from common.enum.stats import ArtifactMainStat
+from common.enum.stats import ArtifactMainStat, ArtifactSubStat
 from profiles.character import CharacterBaseProfile, CharacterProfile
 from profiles.weapon import WeaponProfile
 from profiles.talents import TalentProfile
 from common.enum.element import Element
-from common.enum.artifact_set import ArtifactSet
+from common.enum.artifact_set import ArtifactSetKey
 from common.enum.weapon import WeaponType
 from profiles.artifacts import ArtifactMainStats
 
@@ -37,7 +37,19 @@ skirk_profile = CharacterProfile(
         circlet=ArtifactMainStat.CRIT_DMG
     ),
     sets={
-        ArtifactSet.MARECHAUSSE_HUNTER.name: 4,
+        ArtifactSetKey.MARECHAUSSE_HUNTER.value: 4,
+    },
+    substat_rolls={
+        ArtifactSubStat.HP.value: 2,
+        ArtifactSubStat.HP_PERCENTAGE.value: 2,
+        ArtifactSubStat.ATK.value: 2,
+        ArtifactSubStat.ATK_PERCENTAGE.value: 2,
+        ArtifactSubStat.DEF.value: 2,
+        ArtifactSubStat.DEF_PERCENTAGE.value: 2,
+        ArtifactSubStat.ELEMENTAL_MASTERY.value: 2,
+        ArtifactSubStat.ENERGY_RECHARGE.value: 2,
+        ArtifactSubStat.CRIT_RATE.value: 2,
+        ArtifactSubStat.CRIT_DMG.value: 2,
     }
 )
 
@@ -74,7 +86,19 @@ furina_profile = CharacterProfile(
         circlet=ArtifactMainStat.CRIT_RATE
     ),
     sets={
-        ArtifactSet.GOLDEN_TROUPE.name: 4,
+        ArtifactSetKey.GOLDEN_TROUPE.value: 4,
+    },
+    substat_rolls={
+        ArtifactSubStat.HP.value: 2,
+        ArtifactSubStat.HP_PERCENTAGE.value: 2,
+        ArtifactSubStat.ATK.value: 2,
+        ArtifactSubStat.ATK_PERCENTAGE.value: 2,
+        ArtifactSubStat.DEF.value: 2,
+        ArtifactSubStat.DEF_PERCENTAGE.value: 2,
+        ArtifactSubStat.ELEMENTAL_MASTERY.value: 2,
+        ArtifactSubStat.ENERGY_RECHARGE.value: 2,
+        ArtifactSubStat.CRIT_RATE.value: 2,
+        ArtifactSubStat.CRIT_DMG.value: 2,
     }
 )
 

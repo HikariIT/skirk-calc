@@ -1,13 +1,16 @@
-from common.enum.event import Event
+from common.enum.event import Event, LogEventType
 from common.logger.logger import Logger
 from typing import Callable
 
+from sim.handlers.base import BaseHandler
 
-class PubSub:
+
+class EventHandler(BaseHandler):
 
     def __init__(self):
         self.logger = Logger(__name__)
-        self.logger.info("PubSub initialized")
+        super().__init__(self.logger, 0)
+
         self.subscriber_list = {
             event: {} for event in Event
         }
@@ -22,6 +25,6 @@ class PubSub:
     def publish(self, event: Event, *args, **kwargs):
         if event in self.subscriber_list:
             for key, callback in self.subscriber_list[event].items():
+                self.logger.event(LogEventType.EVENT, 'Simulation', f'callback-{key}', name=event.name, arguments=args, named_arguments=kwargs)
                 callback(*args, **kwargs)
-                self.logger.info(f"Callback -> {{key: {key.ljust(30)}event: {event.name.ljust(20)}args: {args}, kwargs: {kwargs} }}")
 

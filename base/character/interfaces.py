@@ -1,11 +1,13 @@
-from abc import ABC, abstractmethod
-
-from common.struct.character.actions import HealAction
 from common.struct.character.result import ActionResult
+from common.struct.event.heal import HealDetails
+from common.enum.stats import CharacterStatValues, CharacterStats
 from common.enum.action import ActionType
 
 
-class CharacterHPInterface(ABC):
+class CharacterHPInterface:
+
+    def get_max_hp(self) -> float:
+        raise NotImplementedError("TODO: This method should be implemented")
 
     def get_current_hp(self) -> float:
         raise NotImplementedError("TODO: This method should be implemented")
@@ -25,7 +27,7 @@ class CharacterHPInterface(ABC):
     def modify_hp_percent(self, percent: float) -> ActionResult:
         raise NotImplementedError("TODO: This method should be implemented")
 
-    def heal(self, hp: HealAction) -> ActionResult:
+    def heal(self, hp: HealDetails) -> ActionResult:
         raise NotImplementedError("TODO: This method should be implemented")
 
     def drain(self, hp: float) -> ActionResult:
@@ -35,7 +37,7 @@ class CharacterHPInterface(ABC):
 type ActionParams = dict[str, float]
 
 
-class CharacterActionInterface(ABC):
+class CharacterActionInterface:
 
     def normal_attack(self, params: ActionParams) -> ActionResult:
         raise NotImplementedError("TODO: This method should be implemented")
@@ -79,10 +81,8 @@ class CharacterCheckInterface:
 
 class CharacterBaseInterface(CharacterHPInterface, CharacterActionInterface, CharacterCheckInterface):
 
-
     def set_cooldown(self, action: ActionType, frames: int) -> None:
         raise NotImplementedError("TODO: This method should be implemented")
-
 
     def get_cooldown(self, action: ActionType) -> int:
         raise NotImplementedError("TODO: This method should be implemented")
@@ -97,4 +97,7 @@ class CharacterBaseInterface(CharacterHPInterface, CharacterActionInterface, Cha
         raise NotImplementedError("TODO: This method should be implemented")
 
     def get_skill_charges(self, action: ActionType) -> int:
+        raise NotImplementedError("TODO: This method should be implemented")
+
+    def get_base_stats(self) -> CharacterStatValues:
         raise NotImplementedError("TODO: This method should be implemented")

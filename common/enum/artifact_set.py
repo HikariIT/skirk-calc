@@ -1,16 +1,9 @@
 from enum import Enum
 
 
-class ArtifactSet(Enum):
-    GOLDEN_TROUPE = 1
-    MARECHAUSSE_HUNTER = 2
-    SCROLL_OF_THE_HERO_OF_CINDER_CITY = 3
-    FINALE_OF_THE_DEEP_GALLERIES = 4
-    NO_ARTIFACT_SET = 5
-
-    @staticmethod
-    def get_from_name(name: str) -> 'ArtifactSet':
-        for artifact_set in ArtifactSet:
-            if artifact_set.name == name:
-                return artifact_set
-        return ArtifactSet.NO_ARTIFACT_SET
+class ArtifactSetKey(Enum):
+    GOLDEN_TROUPE = 'Golden Troupe'
+    MARECHAUSSE_HUNTER = 'Marcheaussee Hunter'
+    SCROLL_OF_THE_HERO_OF_CINDER_CITY = 'Scroll of the Hero of Cinder City'
+    FINALE_OF_THE_DEEP_GALLERIES = 'Finale of the Deep Galleries'
+    NO_ARTIFACT_SET = 'No Artifact Set'

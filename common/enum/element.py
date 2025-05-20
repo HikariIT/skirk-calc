@@ -10,6 +10,7 @@ class Element(Enum):
     GEO = 5
     DENDRO = 6
     CRYO = 7
+    PHYSICAL = 8
 
     def __str__(self):
         return self.name.capitalize()

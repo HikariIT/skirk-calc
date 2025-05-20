@@ -24,12 +24,24 @@
     "CRIT_RATE": 0.192
   },
   "sets": {
-    "GOLDEN_TROUPE": 4
+    "Golden Troupe": 4
   },
   "main_stats": {
     "rarity": 5,
-    "sands": 8,
-    "goblet": 13,
-    "circlet": 9
+    "sands": "HP%",
+    "goblet": "Hydro%",
+    "circlet": "CR"
+  },
+  "substat_rolls": {
+    "HP": 2,
+    "HP%": 2,
+    "ATK": 2,
+    "ATK%": 2,
+    "DEF": 2,
+    "DEF%": 2,
+    "EM": 2,
+    "ER": 6,
+    "CR": 10,
+    "CD": 10
   }
 }

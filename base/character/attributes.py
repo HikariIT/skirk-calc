@@ -1,10 +1,8 @@
 from dataclasses import dataclass
 
-from character.base.artifact.artifact_set import ArtifactSetWrapper
-from character.base.weapon.weapon import WeaponWrapper
-from common.enum.artifact_set import ArtifactSet
-from common.enum.element import Element
+from base.weapon.weapon import WeaponBase
 from profiles.character import CharacterProfile
+from common.enum.element import Element
 
 @dataclass
 class CharacterBaseAttributes:
@@ -42,8 +40,7 @@ class CharacterSkillConstellationUpgradeAttributes:
 
 @dataclass
 class CharacterEquipmentAttributes:
-    weapon: WeaponWrapper
-    sets: dict[ArtifactSet, int]
+    weapon: WeaponBase | None
 
 @dataclass
 class CharacterEnergyAttributes:
@@ -55,30 +52,3 @@ class CharacterEnergyAttributes:
 class CharacterNormalAttackAttributes:
     max_hits: int
     counter: int
-
-@dataclass
-class CharacterBaseStatAttributes:
-    hp: float
-    hpp: float
-    atk: float
-    atkp: float
-    defence: float
-    defencep: float
-    em: float
-    er: float
-    crit_rate: float
-    crit_dmg: float
-    healing_bonus: float
-    pyro_dmg_bonus: float
-    hydro_dmg_bonus: float
-    cryo_dmg_bonus: float
-    electro_dmg_bonus: float
-    anemo_dmg_bonus: float
-    geo_dmg_bonus: float
-    dendro_dmg_bonus: float
-    physical_dmg_bonus: float
-    attack_speed: float
-    all_dmg_bonus: float
-    base_hp: float
-    base_atk: float
-    base_def: float

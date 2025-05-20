@@ -1,6 +1,9 @@
 import heapq
+from common.logger.logger import Logger
 from common.struct.simulation.task import Task
 from typing import Callable, Tuple
+
+from sim.handlers.base import BaseHandler
 
 
 class PriorityQueue:
@@ -19,20 +22,18 @@ class PriorityQueue:
     def peek(self) -> Task | None:
         return self._queue[0][2] if self._queue else None
 
-class TaskHandler:
+class TaskHandler(BaseHandler):
 
     frame: int
     queue: PriorityQueue
 
     def __init__(self):
-        self.frame = 0
+        self.logger = Logger(__name__)
+        super().__init__(self.logger, 0)
         self.queue = PriorityQueue()
 
-    def add_task(self, callback: Callable, delay: int):
-        self.queue.push(Task(self.frame + delay, callback))
-
-    def advance_frame(self, frames: int):
-        self.frame += frames
+    def add_task(self, task_name: str, callback: Callable, delay: int):
+        self.queue.push(Task(task_name, self.frame + delay, callback))
 
     def execute_tasks(self):
         while True:
@@ -41,3 +42,7 @@ class TaskHandler:
                 break
             task = self.queue.pop()
             task.callback()
+
+    def advance_frame(self, frame: int = 1):
+        super().advance_frame(frame)
+        self.execute_tasks()

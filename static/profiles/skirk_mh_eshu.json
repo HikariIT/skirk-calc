@@ -24,12 +24,24 @@
     "CRIT_DMG": 0.384
   },
   "sets": {
-    "MARECHAUSSE_HUNTER": 4
+    "Marcheaussee Hunter": 4
   },
   "main_stats": {
     "rarity": 5,
-    "sands": 4,
-    "goblet": 4,
-    "circlet": 10
+    "sands": "ATK%",
+    "goblet": "ATK%",
+    "circlet": "CD"
+  },
+  "substat_rolls": {
+    "HP": 2,
+    "HP%": 2,
+    "ATK": 2,
+    "ATK%": 2,
+    "DEF": 2,
+    "DEF%": 2,
+    "EM": 2,
+    "ER": 2,
+    "CR": 2,
+    "CD": 2
   }
 }
