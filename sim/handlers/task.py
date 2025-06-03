@@ -1,48 +1,32 @@
-import heapq
-from common.logger.logger import Logger
+from common.utils.priority_queue import PriorityQueue
 from common.struct.simulation.task import Task
-from typing import Callable, Tuple
-
 from sim.handlers.base import BaseHandler
+from common.logger.logger import Logger
+from typing import Callable
 
-
-class PriorityQueue:
-
-    def __init__(self):
-        self._queue: list[tuple[int, int, Task]] = []
-        self._index = 0
-
-    def push(self, task: Task):
-        heapq.heappush(self._queue, (task.frame, self._index, task))
-        self._index += 1
-
-    def pop(self) -> Task:
-        return heapq.heappop(self._queue)[2]
-
-    def peek(self) -> Task | None:
-        return self._queue[0][2] if self._queue else None
 
 class TaskHandler(BaseHandler):
 
     frame: int
-    queue: PriorityQueue
+    _queue: PriorityQueue
 
     def __init__(self):
         self.logger = Logger(__name__)
         super().__init__(self.logger, 0)
-        self.queue = PriorityQueue()
+        self._queue = PriorityQueue()
+        self.logger.info("TaskHandler initialized with an empty priority queue.")
 
     def add_task(self, task_name: str, callback: Callable, delay: int):
-        self.queue.push(Task(task_name, self.frame + delay, callback))
+        self._queue.push(Task(task_name, self.frame + delay, callback))
 
     def execute_tasks(self):
         while True:
-            next_task = self.queue.peek()
+            next_task = self._queue.peek()
             if not next_task or next_task.frame > self.frame:
                 break
-            task = self.queue.pop()
+            task = self._queue.pop()
             task.callback()
 
-    def advance_frame(self, frame: int = 1):
-        super().advance_frame(frame)
+    def tick(self):
+        super().tick()
         self.execute_tasks()

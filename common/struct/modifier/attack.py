@@ -1,11 +1,9 @@
-from common.struct.modifier.modifier import BaseModifier
+from common.struct.modifier.modifier import BaseModifier, ModifierFunctionResult
 from common.struct.event.attack import AttackEvent
-from common.enum.stats import CharacterStatValues
-from common.enum.modifier import ModifierResult
 from typing import Callable
 
 
-type AttackModifierFunction = Callable[[AttackEvent], tuple[CharacterStatValues, ModifierResult]]
+type AttackModifierFunction = Callable[[AttackEvent], ModifierFunctionResult]
 
 
 class CharacterAttackModifier(BaseModifier):

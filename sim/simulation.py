@@ -37,8 +37,20 @@ class Simulation:
     def _create_handlers(self):
         self.task_handler = TaskHandler()
         self.event_handler = EventHandler()
-        self.combat_handler = CombatHandler()
-        self.player_handler = PlayerHandler()
+
+        self.player_handler = PlayerHandler(
+            self.event_handler,
+            self.task_handler,
+            self.cfg.character_delays,
+            self.cfg.enable_hitlag
+        )
+
+        self.combat_handler = CombatHandler(
+            self.event_handler,
+            self.task_handler,
+            self.player_handler,
+            self.cfg.enable_hitlag
+        )
 
     def _add_characters(self):
         for character_config_path in self.cfg.character_configs:
@@ -52,7 +64,6 @@ class Simulation:
             character_wrapper = CharacterWrapper(character_profile, 0, self.logger, self.event_handler, self.task_handler)
             character_constructor = self.registry.get_character(character_wrapper.base.name)
             character = character_constructor(self.core, character_wrapper, character_profile)
-            character.initialize()
 
             weapon_profile = character_profile.weapon
             weapon_wrapper = WeaponWrapper(weapon_profile, self.logger)
@@ -72,49 +83,18 @@ class Simulation:
         self._add_characters()
 
     def run(self):
-        heal_details = HealDetails(
-            healer_index=3,
-            target_index=0,
-            heal_bonus=0.0,
-            heal_type=HealType.FLAT,
-            amount=2137.0,
-            name='test-heal'
-        )
+        for character in self.core.player_handler.get_characters():
+            self.logger.info(f"Initializing character: {character.base.name}")
+            character.initialize()
+        self.furina = self.core.player_handler.get_by_index(0)
+        pass
 
-        self.event_handler.publish(
-            Event.ON_HEAL,
-            HealEvent(
-                data=heal_details,
-                target_index=0,
-                heal_initial=2137.0,
-                heal_final=2137.0 - 420.0,
-                heal_overflow=420.0
-            )
-        )
+    def tick(self):
+        self.logger.info(f" Frame: {self.core.frame + 1} ".center(73, '-'))
+        self.core.tick()
 
-    def advance_frame(self, frame: int = 0):
-        self.logger.info(f" Frame: {self.core.frame + frame} ".center(73, '-'))
-        self.core.advance_frame(frame)
-
-        if self.core.frame == 230:
-            heal_details = HealDetails(
-                healer_index=3,
-                target_index=0,
-                heal_bonus=0.0,
-                heal_type=HealType.FLAT,
-                amount=2137.0,
-                name='test-heal'
-            )
-            self.event_handler.publish(
-            Event.ON_HEAL,
-            HealEvent(
-                data=heal_details,
-                target_index=0,
-                heal_initial=2137.0,
-                heal_final=2137.0 - 420.0,
-                heal_overflow=420.0
-            )
-        )
+        if self.core.frame == 20:
+            self.furina.elemental_burst()
 
     def test_enqueue_tasks(self):
         self.task_handler.add_task('test-task', self._test_task, 5)

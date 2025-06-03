@@ -79,7 +79,11 @@ class CharacterCheckInterface:
         raise NotImplementedError("TODO: This method should be implemented")
 
 
-class CharacterBaseInterface(CharacterHPInterface, CharacterActionInterface, CharacterCheckInterface):
+class CharacterEnergyInterface:
+    def consume_energy(self, energy: float) -> ActionResult:
+        raise NotImplementedError("TODO: This method should be implemented")
+
+class CharacterBaseInterface(CharacterHPInterface, CharacterActionInterface, CharacterCheckInterface, CharacterEnergyInterface):
 
     def set_cooldown(self, action: ActionType, frames: int) -> None:
         raise NotImplementedError("TODO: This method should be implemented")
@@ -101,3 +105,4 @@ class CharacterBaseInterface(CharacterHPInterface, CharacterActionInterface, Cha
 
     def get_base_stats(self) -> CharacterStatValues:
         raise NotImplementedError("TODO: This method should be implemented")
+

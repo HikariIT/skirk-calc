@@ -16,3 +16,9 @@ class HealDetails:
     def __repr__(self):
         return str(self.to_json()) # type: ignore
 
+@dataclass_json
+@dataclass
+class DrainDetails:
+    target_index: int
+    amount: float
+    name: str

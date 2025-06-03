@@ -16,14 +16,14 @@ class TestTaskHandler:
 
     def test_init(self):
         assert self.task_handler.frame == 0
-        assert self.task_handler.queue is not None
+        assert self.task_handler._queue is not None
 
     def test_add_task(self):
         def dummy_task():
             print('2137')
 
         self.task_handler.add_task(dummy_task, 5)
-        next_task = self.task_handler.queue.peek()
+        next_task = self.task_handler._queue.peek()
 
         assert next_task is not None
         assert next_task.frame == 5
@@ -33,7 +33,7 @@ class TestTaskHandler:
         task_mock = mocker.Mock()
 
         self.task_handler.add_task(task_mock, 5)
-        self.task_handler.advance_frame(5)
+        self.task_handler.tick(5)
         self.task_handler.execute_tasks()
         task_mock.assert_called_once()
 
@@ -43,7 +43,7 @@ class TestTaskHandler:
 
         self.task_handler.add_task(task_mock_1, 5)
         self.task_handler.add_task(task_mock_2, 5)
-        self.task_handler.advance_frame(5)
+        self.task_handler.tick(5)
         self.task_handler.execute_tasks()
 
         task_mock_1.assert_called_once()

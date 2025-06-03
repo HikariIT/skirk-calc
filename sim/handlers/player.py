@@ -1,23 +1,41 @@
-from common.enum.event import LogEventType
+from common.enum.action import CharacterAction
 from common.struct.event_data.heal import HealDetails
-from common.logger.logger import Logger
-from common.const.const import HEAL_ALL_TARGETS
 from common.struct.simulation.snapshot import Snapshot
+from common.const.const import HEAL_ALL_TARGETS
+from common.enum.event import LogEventType
+from common.logger.logger import Logger
+
+from sim.handlers.event import EventHandler
 from sim.handlers.base import BaseHandler
+from sim.handlers.task import TaskHandler
+
 from copy import copy
 
+
 class PlayerHandler(BaseHandler):
+
+    logger: Logger
+    frame: int
     _active_index: int
     _characters: list
     _artifact_sets: list
+    _delays: dict[CharacterAction, int]
+    _event_handler: EventHandler
+    _task_handler: TaskHandler
+    _enable_hitlag: bool
 
-    def __init__(self):
+    def __init__(self, event: EventHandler, task: TaskHandler, delays: dict[CharacterAction, int], enable_hitlag: bool = True):
         self.logger = Logger(__name__)
         super().__init__(self.logger, 0)
 
         self._active_index = 0
         self._characters = []
         self._artifact_sets = []
+        self._delays = delays
+        self._event_handler = event
+        self._task_handler = task
+        self._enable_hitlag = enable_hitlag
+        self.logger.info(f"PlayerHandler initialized with delays {self._delays} and hitlag {'enabled' if self._enable_hitlag else 'disabled'}.")
 
     @property
     def active(self):
@@ -41,17 +59,19 @@ class PlayerHandler(BaseHandler):
     def add_artifact_set(self, artifact_set) -> None:
         self._artifact_sets.append(artifact_set)
 
-    def advance_frame(self, frame: int = 1):
-        super().advance_frame(frame)
+    def tick(self):
+        super().tick()
         for character in self._characters:
-            character.modifier_handler.advance_frame(frame)
+            character.modifier_handler.tick()
 
     def get_snapshot(self, index: int) -> Snapshot:
+        character = self.get_by_index(index)
+        return character.snapshot()
+
+    def get_by_index(self, index: int):
         if index >= len(self._characters):
             raise IndexError(f"Index {index} out of range for characters list.")
-        character = self._characters[index]
-        return Snapshot(
-            stats=character.stats,
-            character_lvl=character.level,
-            frame=self.frame
-        )
+        return self._characters[index]
+
+    def get_characters(self):
+        return self._characters

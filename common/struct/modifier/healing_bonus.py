@@ -1,9 +1,13 @@
-from common.struct.modifier.modifier import BaseModifier
+from common.struct.modifier.modifier import BaseModifier, ModifierResult
+from typing import Callable
 
 
-class HealingBonusModifier(BaseModifier):
-    value: float
+type IncomingHealingBonusModifierFunction = Callable[[], tuple[float, ModifierResult, str]]
 
-    def __init__(self, status_key: str, frame_duration: int, hitlag: bool, value: float, status_expiry: int = 0, status_extension: int = 0):
+
+class IncomingHealingBonusModifier(BaseModifier):
+    value: IncomingHealingBonusModifierFunction
+
+    def __init__(self, status_key: str, frame_duration: int, hitlag: bool, value: IncomingHealingBonusModifierFunction, status_expiry: int = 0, status_extension: int = 0):
         super().__init__(status_key, frame_duration, hitlag, status_expiry, status_extension)
         self.value = value

@@ -6,7 +6,7 @@ class BaseHandler:
     def __init__(self, logger: Logger, frame: int = 0):
         self.frame = frame
         self.logger = logger
-        self.logger.info(f"{self.__class__.__name__} initialized")
+        self.logger.info(f"{self.__class__.__name__} initializing...")
 
-    def advance_frame(self, frame: int = 1):
-        self.frame += frame
+    def tick(self):
+        self.frame += 1

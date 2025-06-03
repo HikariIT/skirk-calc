@@ -1,0 +1,2 @@
+class CharacterFrames:
+    pass

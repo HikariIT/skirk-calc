@@ -152,6 +152,9 @@ class CharacterBase(CharacterWrapper):
     def snapshot(self) -> Snapshot:
         stats = self.base_stats.copy()
 
+        if not stats:
+            return Snapshot(CharacterStats.get_empty_dict(), self.base.level, self.core.frame)
+
         base_atk = stats.pop(CharacterStats.BASE_ATK)
         base_def = stats.pop(CharacterStats.BASE_DEF)
         base_hp = stats.pop(CharacterStats.BASE_HP)
@@ -247,3 +250,30 @@ class CharacterBase(CharacterWrapper):
         self.logger.event(LogEventType.HEAL, self.base.name, 'heal', args=heal_event)
         self.event_handler.publish(Event.ON_HEAL, heal_event)
         return ActionResult(no_frames=0)
+
+    # Energy and cooldown interface
+
+    def set_cooldown(self, action: ActionType, frames: int) -> None:
+        if frames < 0:
+            raise ValueError("Cooldown frames cannot be negative")
+        self.action_cooldown[action] = frames
+        self.logger.event(LogEventType.CHARACTER, self.base.name, 'set-cooldown', action=action, frames=frames)
+
+    def consume_energy(self, delay: int = 0) -> None:
+        if delay > 0:
+            self.task_handler.add_task(
+                f'{self.base.name}-consume-energy',
+                lambda: self._consume_energy_task(),
+                delay
+            )
+        else:
+            self._consume_energy_task()
+
+    def _consume_energy_task(self) -> None:
+        self.logger.event(
+            LogEventType.CHARACTER, self.base.name, 'consume-energy',
+            pre_consume=self.energy.energy,
+            post_consume=0,
+            max_energy=self.energy.max_energy,
+        )
+        self.energy.energy = 0

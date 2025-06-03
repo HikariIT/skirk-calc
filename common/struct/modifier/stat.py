@@ -1,10 +1,9 @@
-from common.enum.stats import CharacterStats, CharacterStatValues
-from common.enum.modifier import ModifierResult
-from common.struct.modifier.modifier import BaseModifier
+from common.struct.modifier.modifier import BaseModifier, ModifierFunctionResult
+from common.enum.stats import CharacterStats
 from typing import Callable
 
 
-type StatModifierFunction = Callable[[], tuple[CharacterStatValues, ModifierResult]]
+type StatModifierFunction = Callable[[], ModifierFunctionResult]
 
 
 class HealingBonusModifier(BaseModifier):

@@ -30,7 +30,7 @@ class Logger:
             LogEventType.CALCULATION,
             LogEventType.MODIFIER,
             LogEventType.HITLAG,
-            # LogEventType.SNAPSHOT,
+            LogEventType.SNAPSHOT,
         ]
         self.logger = logging.getLogger(name)
         self.logger.setLevel(self.DEFAULT_LOG_LEVEL)

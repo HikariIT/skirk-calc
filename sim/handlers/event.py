@@ -1,8 +1,7 @@
 from common.enum.event import Event, LogEventType
+from sim.handlers.base import BaseHandler
 from common.logger.logger import Logger
 from typing import Callable
-
-from sim.handlers.base import BaseHandler
 
 
 class EventHandler(BaseHandler):
@@ -14,6 +13,7 @@ class EventHandler(BaseHandler):
         self.subscriber_list = {
             event: {} for event in Event
         }
+        self.logger.info("EventHandler initialized with empty subscriber list for all events.")
 
     def subscribe(self, event: Event, callback: Callable, key: str):
         self.subscriber_list[event][key] = callback

@@ -8,5 +8,5 @@ if __name__ == "__main__":
 	simulation.init()
 	simulation.run()
 	# simulation.test_enqueue_tasks()
-	for i in range(600):
-		simulation.advance_frame(1)
+	for i in range(200):
+		simulation.tick()

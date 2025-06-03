@@ -2,13 +2,14 @@ from copy import copy
 from common.enum.event import LogEventType
 from common.enum.modifier import ModifierType
 from common.logger.logger import Logger
+from common.struct.modifier.attack import CharacterAttackModifier
 from common.struct.modifier.modifier import BaseModifier
 from common.struct.modifier.status import CharacterStatusModifier
-from common.struct.modifier.healing_bonus import HealingBonusModifier
+from common.struct.modifier.healing_bonus import IncomingHealingBonusModifier
 
 class ModifierHandler:
     status_list: dict[str, CharacterStatusModifier]
-    modifiers: dict[ModifierType, dict[str, HealingBonusModifier]]
+    modifiers: dict[ModifierType, dict[str, BaseModifier]]
 
     def __init__(self, frame, logger: Logger, character_name: str):
         self.status_list = {}
@@ -34,7 +35,13 @@ class ModifierHandler:
 
         self._create_status(status)
 
-    def add_healing_bonus_modifier(self, modifier: HealingBonusModifier) -> None:
+    def delete_status(self, status_key: str) -> None:
+        if status_key in self.status_list:
+            status = self.status_list[status_key]
+            self._trigger_status_expiry(status)
+            del self.status_list[status_key]
+
+    def add_incoming_healing_bonus_modifier(self, modifier: IncomingHealingBonusModifier) -> None:
         self.modifiers[ModifierType.HEALING_BONUS][modifier.status_key] = modifier
         self.logger.event(
             LogEventType.MODIFIER,
@@ -54,8 +61,19 @@ class ModifierHandler:
     def add_stat_modifier(self, status_key: str, frame_duration: int) -> None:
         ...
 
-    def add_attack_modifier(self, status_key: str, frame_duration: int) -> None:
-        ...
+    def add_attack_modifier(self, modifier: CharacterAttackModifier) -> None:
+        self.modifiers[ModifierType.ATTACK][modifier.status_key] = modifier
+        self.logger.event(
+            LogEventType.MODIFIER,
+            self.name,
+            'modifier-added-attack',
+            status_key=modifier.status_key,
+            frame_duration=modifier.frame_duration,
+            hitlag=modifier.hitlag,
+            status_expiry=modifier.status_expiry,
+            status_extension=modifier.status_extension,
+            frame=self.frame,
+        )
 
     def add_cooldown_modifier(self, status_key: str, frame_duration: int) -> None:
         ...
@@ -65,6 +83,11 @@ class ModifierHandler:
             modifier.value for modifier in self.modifiers[ModifierType.HEALING_BONUS].values()
             if modifier.status_expiry > self.frame
         )
+
+    def get_remaining_status_duration(self, status_key: str) -> int:
+        if status_key in self.status_list:
+            return max(0, self.status_list[status_key].status_expiry - self.frame)
+        return 0
 
     def has_status_active(self, status_key: str) -> bool:
         return status_key in self.status_list and self.status_list[status_key].status_expiry > self.frame
@@ -120,8 +143,8 @@ class ModifierHandler:
                     )
                     del self.modifiers[modifier_key][key]
 
-    def advance_frame(self, frames: int = 0) -> None:
-        self.frame += frames
+    def tick(self) -> None:
+        self.frame += 1
         for status_key in list(self.status_list.keys()):
             status = self.status_list[status_key]
             self._trigger_status_expiry(status)

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from common.enum.attack import AttackType, AttackAdditionalType
 from common.enum.element import Element
+from common.enum.icd import ICDGroup, ICDTag
 from common.enum.stats import CharacterStats
 from typing import Optional
 
@@ -13,9 +14,10 @@ class AttackDetails:
     attack_type: AttackType
     attack_additional_type: AttackAdditionalType
     poise_damage: float
-    icd_tag: str
-    icd_group: str
+    icd_tag: ICDTag
+    icd_group: ICDGroup
     element: Element
+    aura_durability: float
 
     multipliers: list[float]
     stats: list[CharacterStats]
@@ -23,7 +25,3 @@ class AttackDetails:
 
     hitlag_frames: Optional[float] = 0.0
     hitlag_factor: Optional[float] = 0.0
-
-    def __repr__(self):
-        return str(self.to_json()) # type: ignore
-

@@ -1,4 +1,11 @@
 from dataclasses import dataclass
+from typing import Optional
+
+from common.enum.modifier import ModifierResult
+from common.enum.stats import CharacterStatValues
+
+
+type ModifierFunctionResult = tuple[CharacterStatValues, ModifierResult, str]
 
 
 @dataclass
